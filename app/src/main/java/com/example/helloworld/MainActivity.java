@@ -1,6 +1,7 @@
 package com.example.helloworld;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,7 +19,26 @@ import com.example.helloworld.entity.Persona;
 public class MainActivity extends AppCompatActivity {
 
     @Override
+    protected void onStart() {
+        Log.d("msg","Start!!!");
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d("msg","Resume!!!");
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.d("msg","OnRestart!!!");
+        super.onRestart();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("msg","Create!!!");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -46,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
             Persona[] listaPersonas = new Persona[3];
             listaPersonas[0] = new Persona();
             listaPersonas[1] = new Persona();
-            listaPersonas[2]  =new Persona();
+            listaPersonas[2] = new Persona();
 
-            Intent intent = new Intent(MainActivity.this,MainActivity2.class);
-            intent.putExtra("contador",contadorStr.getText().toString());
-            intent.putExtra("numero",5);
-            intent.putExtra("persona",persona);
-            intent.putExtra("lista",listaPersonas);
+            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+            intent.putExtra("contador", contadorStr.getText().toString());
+            intent.putExtra("numero", 5);
+            intent.putExtra("persona", persona);
+            intent.putExtra("lista", listaPersonas);
             startActivity(intent);
         });
 
@@ -63,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Hola!!!", Toast.LENGTH_SHORT).show();
     }
 
-    public void restar(View view){
+    public void restar(View view) {
         TextView contadorStr = findViewById(R.id.labelContador);
         int contador = Integer.parseInt(contadorStr.getText().toString());
         contador--;
@@ -71,4 +91,19 @@ public class MainActivity extends AppCompatActivity {
         contadorStr.setText(String.valueOf(contador));
     }
 
+    public void abrirAct3(View view) {
+        Intent intent = new Intent(MainActivity.this, MainActivity3.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    @Nullable Intent data) {
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            String texto = data.getStringExtra("texto");
+            Log.d("msg",texto);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
